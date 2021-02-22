@@ -75,7 +75,6 @@ const favorites = {
 
     /******* Recherche l'utilisateur *******/
     const infoUser = await User.findOne({ _id: userId }).exec();
-    console.log(infoUser);
 
     // User -> Error
     if (infoUser instanceof Error) {
@@ -121,17 +120,19 @@ const favorites = {
     console.log(b);
     /* Récupérer le header */
     let header = req.get("Authorization");
-    console.log(header);
+
     /* Récupérer le token */
     let token = header.split(" ")[1];
-    console.log(token);
 
     let tokenData = jwt.decode(token, "test");
     console.log(tokenData);
     /* Récupérer l'id */
 
     const infoUser = await User.find({ _id: tokenData.userId }).exec();
-    console.log(infoUser);
+    console.log("Utilisateur : " + infoUser);
+
+    const fav = await User.find({ favorites }).exec();
+    console.log(fav);
 
     // User -> Error
     if (infoUser instanceof Error) {
@@ -144,7 +145,7 @@ const favorites = {
       return;
     }
 
-    res.json(infoUser);
+    res.json(infoUser.favorites);
   },
 };
 
